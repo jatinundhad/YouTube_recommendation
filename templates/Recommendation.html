@@ -6,10 +6,184 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recommended videos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+
+    <style>
+        .main-content {
+            width: 100%;
+        }
+
+        a {
+            color: rgb(48, 180, 224);
+            text-decoration: none;
+        }
+
+        .heading {
+            background-color: rgb(190, 249, 229);
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
+    <main>
+        <nav class="navbar bg-body-tertiary sticky-top">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">Youtube Recommendation</span>
 
+                <span class="mb-0"><a href="/preprocessing">Preprocessing</a></span>
+
+            </div>
+        </nav>
+
+        <section class="main-content pt-3 container">
+            <h1 class="display-6 fs-2 ">Recommended videos</h1>
+            <div class="recommended_videos">
+                <table class="table table-striped mt-3 table-hover">
+                    <thead>
+                        <tr>
+                            <th>YouTube Link</th>
+                            {% for column in columns %}
+                            <th>{{column}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in thumbnails %}
+                        <tr>
+                            <td><a href="https://www.youtube.com/watch?v={{row[1]}}" target="_blank">YT Link</a></td>
+                            <td>{{row[2]}}</td>
+                            <td>{{row[3]}}</td>
+                            <td>{{row[4]}}</td>
+                            <td>{{row[6]}}</td>
+                            <td>{{row[7]}}</td>
+                            <td>{{row[8]}}</td>
+                            <td>{{row[10]}}</td>
+                            <td>{{row[11]}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="content">
+                <div class="row">
+                    {% for row in thumbnails %}
+                    <div class="col-3">
+                        <div class="card  m-2">
+                            <img src="{{row[9]}}" class="card-img-top" alt="{{row[0]}}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{row[2]}}</h5>
+                                <p class="card-text">{{row[3]}}</p>
+                                <p class="card-text"> <strong>Category:</strong> &nbsp;{{row[10]}}</p>
+                                <a href="https://www.youtube.com/watch?v={{row[1]}}" target="_blank">YT Link</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="main-content pt-3 container heading">
+            <h1 class="display-5">Association Rule Mining</h1>
+            <p>Minimum Support count : 70%</p>
+            <p>Minimum Confidence: 80%</p>
+        </section>
+
+        <section class="main-content pt-3 container">
+            <h1 class="display-6 fs-2 ">Transaction represented in tabular form</h1>
+            <div class="recommended_videos">
+                <table class="table table-striped mt-3 table-hover">
+                    <thead>
+                        <tr>
+                            <th>Transaction</th>
+                            {% for column in c1 %}
+                            <th>Video {{column}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in df1 %}
+                        <tr>
+                            <td>T{{loop.index}}</td>
+                            {% for cell in row %}
+                            {% if cell %}
+                            <td><span>&#10003;</span></td>
+                            {% else %}
+                            <td><span>&#10007;</span></td>
+                            {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+        <section class="main-content pt-3 container">
+            <h1 class="display-6 fs-2 ">Frequent Itemset</h1>
+            <div class="recommended_videos">
+                <table class="table table-striped mt-3 table-hover">
+                    <thead>
+                        <tr>
+                            {% for column in c2 %}
+                            <th>{{column}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in df2 %}
+                        <tr>
+                            {% for cell in row %}
+                            <td>{{cell}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="main-content pt-3 container">
+            <h1 class="display-6 fs-2 ">Association Rules</h1>
+            <div class="recommended_videos">
+                <table class="table table-striped mt-3 table-hover">
+                    <thead>
+                        <tr>
+                            {% for column in c3 %}
+                            {% if loop.index == 2 %}
+                            <td></td>
+                            {% endif %}
+                            <th>{{column}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in df3 %}
+                        <tr>
+                            {% for cell in row %}
+                            {% if loop.index == 2 %}
+                            <td><span style="font-size: 30px;">&#8594;</span></td>
+                            {% endif %}
+                            <td>{{cell}}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        </div>
+    </main>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
 
 </html>

@@ -24,21 +24,33 @@
         .hidden {
             display: none;
         }
+
+        button {
+            background-color: rgb(48, 180, 224);
+            margin: 10px;
+            padding: 7px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: rgb(118, 209, 239);
+        }
     </style>
 </head>
 
 <body>
     <main>
-        <nav class="navbar bg-body-tertiary">
+        <nav class="navbar bg-body-tertiary sticky-top">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Youtube Recommendation</span>
 
-                <span class="mb-0"><a href="#">Preprocessing</a></span>
+                <span class="mb-0"><a href="/preprocessing">Preprocessing</a></span>
 
             </div>
         </nav>
 
-        <section class="main-content pt-3">
+        <section class="main-content pt-3 container">
             <h1 class="display-6 fs-2 ms-3">Your Results</h1>
             <div class="content">
                 <div class="row">
@@ -52,16 +64,14 @@
                                     <p class="card-text">{{row[2]}}</p>
                                     <p class="card-text"> <strong>Category:</strong> &nbsp;{{row[3]}}</p>
                                 </div>
-                                <div class="card-footer">
-                                    <div class="hidden">
-                                        <input type="text" name="category" value="{{row[3]}}" />
-                                        <input type="number" name="views" value="{{row[4]}}" />
-                                        <input type="number" name="likes" value="{{row[5]}}" />
-                                        <input type="number" name="dislikes" value="{{row[6]}}" />
-                                        <input type="number" name="comment_count" value="{{row[7]}}" />
-                                    </div>
-                                    <button class="btn btn-primary ms-0">Recommend more</button>
+                                <div class="hidden">
+                                    <input type="text" name="category" value="{{row[3]}}" />
+                                    <input type="number" name="views" value="{{row[4]}}" />
+                                    <input type="number" name="likes" value="{{row[5]}}" />
+                                    <input type="number" name="dislikes" value="{{row[6]}}" />
+                                    <input type="number" name="comment_count" value="{{row[7]}}" />
                                 </div>
+                                <button>Recommend more</button>
                             </div>
                         </form>
                     </div>

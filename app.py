@@ -2,20 +2,40 @@ from flask import Flask, render_template, request
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import plotly.express as px
+import plotly
+import json
+from model.ASM import generate_association_rules
 
 app = Flask(__name__)
 
+raw_data = pd.read_csv("preprocessing/INvideos.csv")
 data = pd.read_csv("preprocessing/preprocessed_data.csv")
 categories = data["category_name"].unique()
 
 
 @app.route("/")
 def recommedation():
+    return render_template("home.html", categories=categories)
 
-    thumbnails = data[["thumbnail_link", "title",
-                       "channel_title", "category_name"]].head(3).values.tolist()
 
-    return render_template("home.html", thumbnails=thumbnails, categories=categories)
+@app.route("/preprocessing", methods=["GET"])
+def preprocessing():
+    if request.method == "GET":
+
+        raw_data_columns = raw_data.columns.tolist()
+        raw_data_columns = raw_data_columns[0:len(raw_data_columns)-1]
+        preprocessed_data_columns = data.columns.tolist()
+
+        raw_data_10 = raw_data.sample(n=5).values.tolist()
+        data_10 = data.sample(n=5).values.tolist()
+
+        df = pd.read_csv("./preprocessing/preprocessed_data.csv")
+        fig = px.pie(df, names='category_name')
+
+        figure = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return render_template("preprocessing.html", figure=figure, raw_data_columns=raw_data_columns, raw_data=raw_data_10, preprocessed_data_columns=preprocessed_data_columns, preprocessed_data=data_10)
 
 
 @app.route("/suggestions", methods=["POST"])
@@ -71,9 +91,14 @@ def recommend():
         final = rec_videos.sort_values(
             by=["cosine_similarity"], ascending=False).head(10)
 
-        print(final)
+        thumbnails = final.values.tolist()
 
-        return render_template("Recommendation.html")
+        columns = ["Title", "Channel Title", "Views", "Likes", "Dislikes",
+                   "Comment counts", "Category name", "Cosine Similarity"]
+
+        c1, c2, c3, df1, df2, df3 = generate_association_rules(thumbnails)
+
+        return render_template("Recommendation.html", thumbnails=thumbnails, columns=columns, c1=c1, c2=c2, c3=c3, df1=df1, df2=df2, df3=df3)
 
 
 app.run(debug=True)

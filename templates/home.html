@@ -12,81 +12,93 @@
 
 
     <style>
-        .sidebar {
-            width: 20%;
-            background-color: rgb(215, 215, 215);
+        body {
+            margin: 0;
+            padding: 0;
         }
 
-        .main-content {
-            width: 80%;
+        .content {
+            margin-top: 10px;
+        }
+
+        .heading {
+            display: flex;
+            justify-content: center;
+        }
+
+        .content h1 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            width: 70%;
+            margin-top: 50px;
+        }
+
+        .content section {
+            display: flex;
+            justify-content: center;
+        }
+
+        .submit {
+            text-align: center;
+        }
+
+        .content ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-size: 25px;
+            width: 100%;
+        }
+
+        .content li {
+            background-color: rgb(209, 209, 209);
+            margin: 5px;
+            padding: 10px;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        .content li:hover {
+            transform: scale(1.03);
         }
 
         a {
             color: rgb(48, 180, 224);
             text-decoration: none;
         }
-
-        .card-footer {
-            background-color: rgb(199, 199, 199);
-        }
     </style>
 </head>
 
 <body>
     <main>
-
-        <nav class="navbar bg-body-tertiary">
+        <nav class="navbar bg-body-tertiary sticky-top">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Youtube Recommendation</span>
-                <span class="mb-0"><a href="#">Preprocessing</a></span>
+                <span class="mb-0"><a href="/preprocessing">Preprocessing</a></span>
             </div>
         </nav>
 
-        <div class="content d-flex">
-            <section class="sidebar pt-3 vh-100">
-                <h1 class="display-5 fs-3 ps-4 pb-2">Categories</h1>
-
+        <div class="content">
+            <div class="heading">
+                <h1 class="text-center display-5 fs-3">Categories</h1>
+            </div>
+            <section class="pt-3">
                 <form action="/suggestions" method="post">
                     <ul type="none">
                         {% for category in categories %}
-                        <li>
+                        <li class="col-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="{{category}}" id="{{category}}" />
-                                <label class="form-check-label" for="{{ category }}">{{ category }}</label>
+                                <label class="form-check-label text-dark" for="{{ category }}">{{ category }}</label>
                             </div>
                         </li>
                         {% endfor %}
                     </ul>
 
-                    <button class="btn btn-dark ms-4" type="submit">Suggest Videos</button>
-                </form>
-
-            </section>
-            <section class="main-content pt-3">
-                <h1 class="display-6 fs-2 ms-3">Your Results</h1>
-                <div class="content">
-
-                    <div class="row">
-                        {% for row in thumbnails %}
-                        <div class="col-4">
-                            <div class="card">
-                                <img src="{{row[0]}}" class="card-img-top" alt="{{row[0]}}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{row[1]}}</h5>
-                                    <p class="card-text">{{row[2]}}</p>
-                                    <p class="card-text"> <strong>Category:</strong> &nbsp;{{row[3]}}</p>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="{{row[3]}}" />
-                                        <label class="form-check-label">Watch this</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
+                    <div class="submit">
+                        <button class="btn btn-dark ms-4" disabled type="submit">Suggest Videos</button>
                     </div>
-                </div>
+                </form>
             </section>
         </div>
     </main>
@@ -98,6 +110,22 @@
 
 
 <script>
+    const checkBoxes = document.getElementsByClassName("form-check-input")
+    const checkboxes = new Array();
+    for (const checkBox of checkBoxes) {
+        checkboxes.push(checkBox);
+    }
+    for (const checkBox of checkBoxes) {
+
+        checkBox.addEventListener("change", (e) => {
+            if (checkboxes.some(checkBox => checkBox.checked === true)) {
+                document.querySelector(".submit > button").disabled = false;
+            } else {
+                document.querySelector(".submit > button").disabled = true;
+            }
+        })
+    }
+
 
 </script>
 
