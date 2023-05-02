@@ -17,8 +17,10 @@
         }
 
         .fig {
-            height: 90vh;
-            width: 90vw;
+            /* height: 90vh;
+            width: 90vw; */
+            display: flex;
+            justify-content: center;
         }
 
         .raw_data,
@@ -101,7 +103,22 @@
             </table>
         </div>
 
-        <div id="fig1" class="fig"></div>
+        <div class="row my-5">
+            <h2 class="mb-3 text-center">Data Visualization</h2>
+            <div class="col-6 border-end">
+                <h1 class="display-6 text-center mt-3">Category wise %</h1>
+                <div id="fig1"></div>
+            </div>
+            <div class="col-6 border-start">
+                <h1 class="display-6 text-center mt-3">Videos / Category</h1>
+                <div id="fig2"></div>
+            </div>
+            <div class="col-12 mt-3">
+                <h1 class="display-6 text-center mt-3">Top 10 Channels of Entertainment Category</h1>
+                <div id="fig3"></div>
+            </div>
+        </div>
+
     </section>
 </body>
 
@@ -112,8 +129,15 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
-    let fig = {{ figure | safe}};
-    Plotly.plot("fig1", fig, {})
+    let fig1 = {{ fig1 | safe}};
+    Plotly.plot("fig1", fig1, {})
+
+    let fig2 = {{ fig2 | safe}};
+    Plotly.plot("fig2", fig2, {})
+
+    let fig3 = {{ fig3 | safe}};
+    Plotly.plot("fig3", fig3, {})
+
 </script>
 
 </html>

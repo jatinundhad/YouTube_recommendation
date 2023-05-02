@@ -3,9 +3,14 @@ import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori
 from mlxtend.frequent_patterns import association_rules
+from mlxtend.frequent_patterns.fpgrowth import fpgrowth
+import time
+
+min_sup = 0.7
+min_conf = 0.8
 
 
-def generate_transactions(data, users):
+def generate_transactions(data, users): 
     for i in range(5):
         # randomly generating the no of videos for perticular transaction
         no_of_v = np.random.randint(3, min(10, len(data)))
@@ -42,15 +47,18 @@ def generate_association_rules(data):
 
     df = pd.DataFrame(te_ary, columns=te.columns_)
 
+    start = time.time()
     # finding frequent patterns
-    frequent_itemsets = apriori(df, min_support=0.7, use_colnames=True)
+    frequent_itemsets = apriori(df, min_support=min_sup, use_colnames=True)
 
     # Generating association rules
     res = association_rules(
-        frequent_itemsets, metric="confidence", min_threshold=0.7)
+        frequent_itemsets, metric="confidence", min_threshold=min_conf)
 
-    res1 = res[res["confidence"] >= 0.8]
-    res1 = res1[["antecedents", "consequents", "confidence"]]
+    end = time.time()
+    t1 = end - start
+
+    res1 = res[["antecedents", "consequents", "confidence"]]
 
     c1 = df.columns
     c2 = frequent_itemsets.columns
@@ -62,4 +70,30 @@ def generate_association_rules(data):
     fre_itemsets = refine_frozenset(fre_itemsets)
     deduced_asso_rules = refine_frozenset(deduced_asso_rules)
 
-    return c1, c2, c3, data_transformation, fre_itemsets, deduced_asso_rules
+    fre_itemsets_fp, deduced_asso_rules_fp, t2 = gen_fre_itemsets_fp(df)
+
+    return c1, c2, c3, data_transformation, fre_itemsets, deduced_asso_rules, fre_itemsets_fp, deduced_asso_rules_fp, t1, t2
+
+
+# fp growth algorithm for generating frequent itemsets effieceintly
+def gen_fre_itemsets_fp(df):
+    start = time.time()
+    frequent_itemsets = fpgrowth(df, min_support=min_sup, use_colnames = True)
+
+     # Generating association rules
+    res = association_rules(
+        frequent_itemsets, metric="confidence", min_threshold=min_conf)
+
+    end = time.time()
+    t2 = end-start
+
+    res1 = res[["antecedents", "consequents", "confidence"]]
+
+    fre_itemsets = frequent_itemsets.to_numpy()
+    deduced_asso_rules = res1.to_numpy()
+
+    fre_itemsets = refine_frozenset(fre_itemsets)
+    deduced_asso_rules = refine_frozenset(deduced_asso_rules)
+
+    return fre_itemsets, deduced_asso_rules, t2
+    

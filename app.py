@@ -6,6 +6,7 @@ import plotly.express as px
 import plotly
 import json
 from model.ASM import generate_association_rules
+import plotly.graph_objects as go
 
 app = Flask(__name__)
 
@@ -30,12 +31,22 @@ def preprocessing():
         raw_data_10 = raw_data.sample(n=5).values.tolist()
         data_10 = data.sample(n=5).values.tolist()
 
-        df = pd.read_csv("./preprocessing/preprocessed_data.csv")
-        fig = px.pie(df, names='category_name')
+        fig1 = px.pie(data, names='category_name')
+        fig1 = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
 
-        figure = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        no_videos_categoryWise = data.groupby("category_name", as_index=False).size()
+        fig2 = px.bar(no_videos_categoryWise, x='category_name', y='size')
+        fig2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
 
-        return render_template("preprocessing.html", figure=figure, raw_data_columns=raw_data_columns, raw_data=raw_data_10, preprocessed_data_columns=preprocessed_data_columns, preprocessed_data=data_10)
+        Entertainment = data[data["category_name"] == "Entertainment"].sort_values(["views", "likes", "comment_count"], ascending=False)
+
+        channels = Entertainment.groupby("channel_title", as_index=False).size()
+        channels_top_10 = channels.sort_values(by="size",ascending=False).head(10)
+
+        fig3 = px.bar(channels_top_10, x='channel_title', y='size')
+        fig3 = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return render_template("preprocessing.html", fig1=fig1, fig2 = fig2, fig3 = fig3, raw_data_columns=raw_data_columns, raw_data=raw_data_10, preprocessed_data_columns=preprocessed_data_columns, preprocessed_data=data_10)
 
 
 @app.route("/suggestions", methods=["POST"])
@@ -96,9 +107,9 @@ def recommend():
         columns = ["Title", "Channel Title", "Views", "Likes", "Dislikes",
                    "Comment counts", "Category name", "Cosine Similarity"]
 
-        c1, c2, c3, df1, df2, df3 = generate_association_rules(thumbnails)
+        c1, c2, c3, df1, df2, df3, df4, df5, time1, time2 = generate_association_rules(thumbnails)
 
-        return render_template("Recommendation.html", thumbnails=thumbnails, columns=columns, c1=c1, c2=c2, c3=c3, df1=df1, df2=df2, df3=df3)
+        return render_template("Recommendation.html", thumbnails=thumbnails, columns=columns, c1=c1, c2=c2, c3=c3, df1=df1, df2=df2, df3=df3, df4=df4, df5=df5, time1=time1, time2=time2)
 
 
 app.run(debug=True)

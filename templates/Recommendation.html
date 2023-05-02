@@ -22,7 +22,13 @@
         }
 
         .heading {
-            background-color: rgb(190, 249, 229);
+            background-color: rgba(62, 250, 187, 0.185);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .sub-heading {
+            background-color: rgba(248, 35, 163, 0.185);
             padding: 10px;
             border-radius: 10px;
         }
@@ -41,7 +47,7 @@
         </nav>
 
         <section class="main-content pt-3 container">
-            <h1 class="display-6 fs-2 ">Recommended videos</h1>
+            <h1 class="display-6 fs-2">Recommended videos</h1>
             <div class="recommended_videos">
                 <table class="table table-striped mt-3 table-hover">
                     <thead>
@@ -88,14 +94,15 @@
             </div>
         </section>
 
-        <section class="main-content pt-3 container heading">
-            <h1 class="display-5">Association Rule Mining</h1>
-            <p>Minimum Support count : 70%</p>
-            <p>Minimum Confidence: 80%</p>
+        <section class="main-content p-4 mt-3 container heading">
+            <h1 class="display-5 fs-1">Association Rule Mining</h1>
+            <p class="display-4 fs-4">Minimum Support count : 70%</p>
+            <p class="display-4 fs-4">Minimum Confidence: 80%</p>
         </section>
 
+
         <section class="main-content pt-3 container">
-            <h1 class="display-6 fs-2 ">Transaction represented in tabular form</h1>
+            <h1 class="display-6 fs-2">Transaction represented in tabular form</h1>
             <div class="recommended_videos">
                 <table class="table table-striped mt-3 table-hover">
                     <thead>
@@ -125,60 +132,131 @@
         </section>
 
 
-        <section class="main-content pt-3 container">
-            <h1 class="display-6 fs-2 ">Frequent Itemset</h1>
-            <div class="recommended_videos">
-                <table class="table table-striped mt-3 table-hover">
-                    <thead>
-                        <tr>
-                            {% for column in c2 %}
-                            <th>{{column}}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in df2 %}
-                        <tr>
-                            {% for cell in row %}
-                            <td>{{cell}}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        <section class="container">
+            <div class="row">
+                <div class="col-6 border-end">
+                    <section class="main-content pt-3 container sub-heading">
+                        <h3 class="display-5 fs-3">Apriori Method</h3>
+                        <h4>{{time1}} seconds required</h4>
+                    </section>
 
-        <section class="main-content pt-3 container">
-            <h1 class="display-6 fs-2 ">Association Rules</h1>
-            <div class="recommended_videos">
-                <table class="table table-striped mt-3 table-hover">
-                    <thead>
-                        <tr>
-                            {% for column in c3 %}
-                            {% if loop.index == 2 %}
-                            <td></td>
-                            {% endif %}
-                            <th>{{column}}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in df3 %}
-                        <tr>
-                            {% for cell in row %}
-                            {% if loop.index == 2 %}
-                            <td><span style="font-size: 30px;">&#8594;</span></td>
-                            {% endif %}
-                            <td>{{cell}}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                    <section class="main-content pt-3 container">
+                        <h1 class="display-6 fs-4">Frequent Itemsets</h1>
+                        <div class="recommended_videos">
+                            <table class="table table-striped mt-3 table-hover">
+                                <thead>
+                                    <tr>
+                                        {% for column in c2 %}
+                                        <th>{{column}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in df2 %}
+                                    <tr>
+                                        {% for cell in row %}
+                                        <td>{{cell}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="main-content pt-3 container">
+                        <h1 class="display-6 fs-4">Association Rules</h1>
+                        <div class="recommended_videos">
+                            <table class="table table-striped mt-3 table-hover">
+                                <thead>
+                                    <tr>
+                                        {% for column in c3 %}
+                                        {% if loop.index == 2 %}
+                                        <td></td>
+                                        {% endif %}
+                                        <th>{{column}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in df3 %}
+                                    <tr>
+                                        {% for cell in row %}
+                                        {% if loop.index == 2 %}
+                                        <td><span style="font-size: 30px;">&#8594;</span></td>
+                                        {% endif %}
+                                        <td>{{cell}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-6 border-start">
+                    <section class="main-content pt-3 container sub-heading">
+                        <h3 class="display-5 fs-3">FP-Growth Method</h3>
+                        <h4>{{time2}} seconds required</h4>
+                    </section>
+
+                    <section class="main-content pt-3 container">
+                        <h1 class="display-6 fs-4">Frequent Itemsets</h1>
+                        <div class="recommended_videos">
+                            <table class="table table-striped mt-3 table-hover">
+                                <thead>
+                                    <tr>
+                                        {% for column in c2 %}
+                                        <th>{{column}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in df4 %}
+                                    <tr>
+                                        {% for cell in row %}
+                                        <td>{{cell}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section class="main-content pt-3 container">
+                        <h1 class="display-6 fs-4">Association Rules</h1>
+                        <div class="recommended_videos">
+                            <table class="table table-striped mt-3 table-hover">
+                                <thead>
+                                    <tr>
+                                        {% for column in c3 %}
+                                        {% if loop.index == 2 %}
+                                        <td></td>
+                                        {% endif %}
+                                        <th>{{column}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in df5 %}
+                                    <tr>
+                                        {% for cell in row %}
+                                        {% if loop.index == 2 %}
+                                        <td><span style="font-size: 30px;">&#8594;</span></td>
+                                        {% endif %}
+                                        <td>{{cell}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             </div>
         </section>
-        </div>
     </main>
 </body>
 
