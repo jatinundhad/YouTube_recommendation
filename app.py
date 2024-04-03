@@ -111,5 +111,5 @@ def recommend():
 
         return render_template("Recommendation.html", thumbnails=thumbnails, columns=columns, c1=c1, c2=c2, c3=c3, df1=df1, df2=df2, df3=df3, df4=df4, df5=df5, time1=time1, time2=time2)
 
-
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
